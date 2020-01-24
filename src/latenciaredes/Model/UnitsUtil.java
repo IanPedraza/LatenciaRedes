@@ -11,8 +11,8 @@ public class UnitsUtil {
         return bytes*0.000008;
     }
     
-    public static Double gygabytesToMegabits(Double gigabytes){
-        return gigabytes*8000;
+    public static Double gygabytesToBytes(Double gigabytes){
+        return gigabytes*1000000000;
     }
     
     public static Double secondsToHours(Double seconds){

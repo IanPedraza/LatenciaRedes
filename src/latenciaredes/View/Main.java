@@ -31,10 +31,10 @@ public class Main {
         );
         
         Double transferTime = networkService.getTransferTime(packagesNumber, bestWay.getLatency());
-        //transferTime = UnitsUtil.secondsToHours(transferTime);
+        transferTime = UnitsUtil.secondsToHours(transferTime);
 
         System.out.println(bestWay);
-        System.out.println("Tiempo de transferencia: " + transferTime + " Seconds");
+        System.out.println("Tiempo de transferencia: " + transferTime + " Hours");
     }
 
     private static void printWays(List<Way> ways) {

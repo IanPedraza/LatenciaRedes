@@ -74,7 +74,7 @@ public class NetworkService implements INetworkService {
 
     @Override
     public int getPackagesNumber(Double packageSize, Double userDataSize) {
-        return (int) (Math.ceil(UnitsUtil.gygabytesToMegabits(packageSize) / userDataSize));
+        return (int) (Math.ceil(UnitsUtil.gygabytesToBytes(packageSize) / userDataSize));
     }
 
 }
