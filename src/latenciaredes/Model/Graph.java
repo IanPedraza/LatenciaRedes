@@ -6,7 +6,6 @@ import java.util.List;
 public class Graph {
 
     private int numero_enlaces;
-    private List<Way> listWays;
 
     //Para no trabajar con una matriz de adyacencias, trabajamos con
     //un arreglo de ArrayList
@@ -32,19 +31,25 @@ public class Graph {
             System.out.println("No se puede agregar el nodo " + link + ": Fuera de rango");
         }
     }
+    
+    public void addLinkList(List<Link> linkList){
+        for (int i = 0; i <= linkList.size() - 1; i++) {
+            addLink(linkList.get(i));
+        }
+    }
 
     public List<Way> getAllWays(Node source, Node destination) {
         boolean[] isVisited = new boolean[numero_enlaces];
 
         ArrayList<Link> way = new ArrayList();
-        listWays = new ArrayList<>();
+        List<Way> listWays = new ArrayList<>();
 
-        getAllWaysUtil(source, destination, isVisited, way);
+        getAllWaysUtil(source, destination, isVisited, way, listWays);
 
         return listWays;
     }
 
-    private void getAllWaysUtil(Node source, Node destiny, boolean[] isVisited, List<Link> way) {
+    private void getAllWaysUtil(Node source, Node destiny, boolean[] isVisited, List<Link> way, List<Way> listWays) {
         try {
             isVisited[source.getNumber()] = true;
 
@@ -62,7 +67,7 @@ public class Graph {
             for (Link i : adjacencyList[source.getNumber()]) {
                 if (!isVisited[i.getDestinyNode().getNumber()]) {
                     way.add(i);
-                    getAllWaysUtil(i.getDestinyNode(), destiny, isVisited, way);
+                    getAllWaysUtil(i.getDestinyNode(), destiny, isVisited, way, listWays);
                     way.remove(i);
                 }
             }

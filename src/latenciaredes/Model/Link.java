@@ -1,7 +1,7 @@
 package latenciaredes.Model;
 
 public class Link {
-    
+
     private Node sourceNode;
     private Node destinyNode;
     private Double speed;
@@ -26,7 +26,7 @@ public class Link {
         this.controlData = 0.0;
         this.userData = 0.0;
     }
-    
+
     public Link(Link link) {
         this.sourceNode = link.sourceNode;
         this.destinyNode = link.destinyNode;
@@ -83,5 +83,20 @@ public class Link {
     public void setUserData(Double userData) {
         this.userData = userData;
     }
-    
+
+    @Override
+    public String toString() {
+        String value = "\nLink";
+        value += "\nSource Node: " + this.sourceNode;
+        value += "\nDestiny Node: " + this.destinyNode;
+        value += "\nSpeed: " + this.speed;
+        value += "\nDistance: " + this.distance;
+        value += "\nControl Data Size: " + this.controlData;
+        value += "\nUser Data Size: " + this.userData;
+
+        value += "\n*********************************";
+
+        return value;
+    }
+
 }

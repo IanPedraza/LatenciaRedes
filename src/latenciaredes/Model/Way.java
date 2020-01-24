@@ -38,5 +38,27 @@ public class Way {
     public void setLatency(Double latency) {
         this.latency = latency;
     }
+
+    @Override
+    public String toString() {
+        String value = "";
+        int count = 1;
+        
+        for(Link link:this.linkList){
+            value += link.getSourceNode().getNumber() + "->";
+            
+            if(count == this.linkList.size())
+                value += link.getDestinyNode().getNumber();
+            
+            count++;
+        }
+        
+        value += "\tLatency: " + latency;
+        value += "\n";
+        
+        return value;
+    }
+    
+    
     
 }

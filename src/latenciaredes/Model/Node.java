@@ -30,5 +30,16 @@ public class Node {
     public void setQueuingDelay(Double queuingDelay) {
         this.queuingDelay = queuingDelay;
     }
+
+    @Override
+    public String toString() {
+        String val = "\nNODE";
+        val += "\nnodeNumber: " + this.number;
+        val += "\nQueuingDelay\n" + this.queuingDelay;
+        
+        return val;
+    }
+    
+    
     
 }
