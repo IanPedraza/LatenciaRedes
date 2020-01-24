@@ -7,8 +7,6 @@ public class Graph {
 
     private int numero_enlaces;
 
-    //Para no trabajar con una matriz de adyacencias, trabajamos con
-    //un arreglo de ArrayList
     private ArrayList<Link>[] adjacencyList;
 
     public Graph(int vertices) {
