@@ -7,9 +7,7 @@ public class Graph {
 
     private int numero_enlaces;
 
-    //Para no trabajar con una matriz de adyacencias, trabajamos con
-    //un arreglo de ArrayList
-    private ArrayList<Integer>[] adjacencyList;
+    private ArrayList<Link>[] adjacencyList;
 
     public Graph(int vertices) {
         this.numero_enlaces = vertices;
@@ -19,46 +17,61 @@ public class Graph {
     private void initAdjList() {
         adjacencyList = new ArrayList[numero_enlaces];
 
-        for (int i = 0; i < numero_enlaces; i++) 
-            adjacencyList[i] = new ArrayList<>();        
-    }
-
-    public void addEdge(int sourceNode, int destinationNode) {
-        if (sourceNode >= 0 && sourceNode <= numero_enlaces - 1) {
-            adjacencyList[sourceNode].add(destinationNode);
-        } else {
-            System.out.println("No se puede agregar el nodo " + sourceNode + ": Fuera de rango");
+        for (int i = 0; i < numero_enlaces; i++) {
+            adjacencyList[i] = new ArrayList<>();
         }
     }
 
-    public void printAllPaths(int source, int destination) {
-        boolean[] isVisited = new boolean[numero_enlaces];
-        ArrayList<Integer> pathList = new ArrayList<>();
-
-        pathList.add(source);
-        printAllPathsUtil(source, destination, isVisited, pathList);
+    public void addLink(Link link) {
+        if (link.getSourceNode().getNumber() >= 0 && link.getSourceNode().getNumber() <= numero_enlaces - 1) {
+            adjacencyList[link.getSourceNode().getNumber()].add(link);
+        } else {
+            System.out.println("No se puede agregar el nodo " + link + ": Fuera de rango");
+        }
+    }
+    
+    public void addLinkList(List<Link> linkList){
+        for (int i = 0; i <= linkList.size() - 1; i++) {
+            addLink(linkList.get(i));
+        }
     }
 
-    private void printAllPathsUtil(Integer node, Integer destination, boolean[] isVisited, List<Integer> localPathList) {
-        try {
-            isVisited[node] = true;
+    public List<Way> getAllWays(Node source, Node destination) {
+        boolean[] isVisited = new boolean[numero_enlaces];
 
-            if (node.equals(destination)) {
-                System.out.println(localPathList);
-                isVisited[node] = false;
+        ArrayList<Link> way = new ArrayList();
+        List<Way> listWays = new ArrayList<>();
+
+        getAllWaysUtil(source, destination, isVisited, way, listWays);
+
+        return listWays;
+    }
+
+    private void getAllWaysUtil(Node source, Node destiny, boolean[] isVisited, List<Link> way, List<Way> listWays) {
+        try {
+            isVisited[source.getNumber()] = true;
+
+            if (source.getNumber() == destiny.getNumber()) {
+                Way n = new Way(
+                        ((List<Link>) ((ArrayList) way).clone()),
+                        0.0
+                );
+
+                listWays.add(n);
+                isVisited[source.getNumber()] = false;
                 return;
             }
 
-            for (Integer i : adjacencyList[node]) {
-                if (!isVisited[i]) {
-                    localPathList.add(i);
-                    printAllPathsUtil(i, destination, isVisited, localPathList);
-                    localPathList.remove(i);
+            for (Link i : adjacencyList[source.getNumber()]) {
+                if (!isVisited[i.getDestinyNode().getNumber()]) {
+                    way.add(i);
+                    getAllWaysUtil(i.getDestinyNode(), destiny, isVisited, way, listWays);
+                    way.remove(i);
                 }
             }
 
-            isVisited[node] = false;
-        }catch(ArrayIndexOutOfBoundsException e){
+            isVisited[source.getNumber()] = false;
+        } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("error: Valores fuera de rango");
         }
     }
