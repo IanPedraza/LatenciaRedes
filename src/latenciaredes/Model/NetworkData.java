@@ -63,7 +63,7 @@ public class NetworkData implements INetworkData {
     }
 
     @Override
-    public void loadData(String path) {
+    public boolean loadData(String path) {
 
         try {
 
@@ -126,9 +126,11 @@ public class NetworkData implements INetworkData {
             String[] decodificadorNodosOD = scanner.nextLine().split(",");
             this.sourceNode = this.nodeList[Integer.parseInt(decodificadorNodosOD[0].trim())];
             this.destinyNode = this.nodeList[Integer.parseInt(decodificadorNodosOD[1].trim())];
-
+            
+            return true;
         } catch (Exception ex) {
-            System.out.println("error al abrir archivo: Formato de archivo inválido\n" + ex);
+            System.out.println("error al abrir archivo: Formato de archivo inválido");
+            return false;
         }
 
     }
