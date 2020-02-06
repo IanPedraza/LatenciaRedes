@@ -15,8 +15,11 @@ public class UnitsUtil {
         return gigabytes*GYGABYTES_TO_BYTES_FACTOR_CONVERSION;
     }
     
-    public static Double secondsToHours(Double seconds){
-        return seconds/SECONDS_TO_HOURS_FACTOR_CONVERSION;
-    }
-    
+    public static String secondsToHoursFormat(Double seconds){
+        Double h = Math.floor(seconds / 3600);
+        Double m = Math.floor((seconds % 3600) / 60);
+        Double s = Math.floor(seconds % 60);
+        
+        return String.format("%02.0f:%02.0f:%02.0f", h, m, s);
+    }    
 }

@@ -1,6 +1,7 @@
 package latenciaredes.View;
 
 import java.util.List;
+import java.util.Scanner;
 import latenciaredes.Model.Graph;
 import latenciaredes.Model.NetworkData;
 import latenciaredes.Model.NetworkService;
@@ -8,26 +9,44 @@ import latenciaredes.Model.UnitsUtil;
 import latenciaredes.Model.Way;
 
 public class Main {
-    /*
-        *** MENU ***
-        1. Abrir archivo
-        2. Mostrar Todo
-        3. Mostrar todos los caminos
-        4. Calcular Latencias de los caminos
-        5. Mostrar el mejor camino
-        6. Mostrar el mejor tiempo de transferencia
-    */
-    
+
     public static void main(String[] args) {
+        //nombre de archivo de prueba test.txt
+        
+        String path = null;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Introduzca la ruta del archivo:");
+        path = scanner.nextLine();
+
+        if (validatePath(path)) {
+            calculate(path);
+        }else{
+            System.out.println("Error: Ruta inválida");
+        }
+
+    }
+
+    public static void calculate(String path) {
         NetworkData networkData = new NetworkData();
-        if (networkData.loadData("C:\\Users\\ianpe\\Desktop\\test.txt")) {
-            Graph graph = new Graph(6);
+        NetworkService networkService = new NetworkService();
+
+        if (networkData.loadData(path)) {
+            Graph graph = new Graph(networkData.getNodeList().length);
             graph.addLinkList(networkData.getLinksList());
 
-            List<Way> ways = graph.getAllWays(networkData.getSourceNode(), networkData.getDestinyNode());
+            List<Way> ways = graph.getAllWays(
+                    networkData.getSourceNode(),
+                    networkData.getDestinyNode()
+            );
 
-            NetworkService networkService = new NetworkService();
             ways = networkService.calculateLatencies(ways);
+
+            System.out.println("********** Lista de Caminos **********");
+
+            for (Way way : ways) {
+                System.out.println(way);
+            }
 
             Way bestWay = networkService.getBestWay(ways);
 
@@ -39,13 +58,18 @@ public class Main {
             );
 
             Double transferTime = networkService.getTransferTime(packagesNumber, bestWay.getLatency());
-            transferTime = UnitsUtil.secondsToHours(transferTime);
 
+            System.out.println("********** Mejor Camino **********");
             System.out.println(bestWay);
-            System.out.println("Tiempo de transferencia: " + transferTime + " Hours");
-        }else{
+            System.out.println("Tiempo de transferencia: " + UnitsUtil.secondsToHoursFormat(transferTime));
+        } else {
             System.out.println("Archivo Inválido");
         }
+    }
+    
+    public static Boolean validatePath(String path){
+        return path != null &&
+                path.trim().length() > 4;
     }
 
 }

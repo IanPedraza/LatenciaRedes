@@ -53,7 +53,7 @@ public class Way {
             count++;
         }
         
-        value += "\tLatency: " + latency;
+        value += String.format("\tlatency: %.6f", latency);
         value += "\n";
         
         return value;

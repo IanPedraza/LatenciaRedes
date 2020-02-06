@@ -10,31 +10,35 @@ public class NetworkService implements INetworkService {
     public Double calculteLatency(Way way) {
         int packageNumber = 1;
         int counter = 1;
-        
         Double previousUserData = 0.0;
-        
+       
         Double latency = 0.0;
+        int listSize = way.getLinkList().size();
         
         for (Link link : way.getLinkList()) {
-            if(counter == 1) previousUserData = link.getUserData();
+            if(counter == 1) 
+                previousUserData = link.getUserData();
             
             Double propagationTime
                     = UnitsUtil.metersToKilometres(link.getDistance()) / SPEED_OF_LIGHT;
             
             Double packageSize = link.getControlData() + link.getUserData();
-
+            
             Double transferTime = UnitsUtil.bytesToMegabits(packageSize) / link.getSpeed();
             
             packageNumber = (int) Math.ceil((previousUserData * packageNumber) / link.getUserData());
             
             previousUserData = link.getUserData();
             
-            latency += (packageNumber * (propagationTime + transferTime)) + 
-                    (packageNumber * link.getDestinyNode().getQueuingDelay());
+            latency += (packageNumber * (propagationTime + transferTime));
+            
+            if(counter != listSize) 
+                latency += (packageNumber * link.getDestinyNode().getQueuingDelay());
             
             counter++;
         }
 
+       
         return latency;
     }
 
